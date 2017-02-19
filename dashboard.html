@@ -1,0 +1,136 @@
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css">
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+	<script type="text/javascript" src="script.js"></script>
+
+
+</head>
+<body style="">
+	<!-- DASHBOARD -->
+	<nav class="navbar navbar-default col-xs-12" style="position: fixed; z-index: 3; border-radius: 0px; background-color: rgba(47, 48, 44, 255); border: 0px;">
+		<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">Imperium</a>
+		</div>
+
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+			<ul class="nav navbar-nav">
+				<li><a href="#">Dashboard</a></li>
+				<li><a href="#">Profile</a></li>
+				<li><a href="#">Configuration</a></li>
+				<li><a href="#">Information</a></li>
+				<li><a href="#">Logs</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/index.html">Signout</a></li>
+			</ul>
+		</div>
+	</nav>
+
+
+	<!-- LEFT DIV -->
+	<div class="col-xs-3" style="background-color: #444444; height: 100%;">
+		<div id="left_div_content" style="margin-top: 22%; color: #BBBBBB;" class="col-xs-10 col-xs-offset-1">
+			<div class="col-xs-12" style="margin-bottom: 5%;">
+				<img src="assets/temp.jpg" class="col-xs-12">
+			</div>
+
+			<h2 style="text-align: center;"> <strong> Juliana </strong> Banatao </h2>
+
+			<span class="col-xs-10 col-xs-offset-1"><strong>Condition: </strong> Parkinsons </span>
+			<span class="col-xs-10 col-xs-offset-1"><strong>Age: </strong> 76 </span>
+			<span class="col-xs-10 col-xs-offset-1"><strong>Hospital: </strong> Kaiser Permanente </span>
+			<span class="col-xs-10 col-xs-offset-1"><strong>Doctor: </strong> Manuel Robertson PhD </span>
+			<span class="col-xs-10 col-xs-offset-1"><strong>Last Log: </strong> 02.18.17 13:42:56 </span>
+
+			
+
+			<span class="col-xs-10 col-xs-offset-1" style="margin-top: 5%;"><strong>Other Notes: </strong></span>
+			<ul class="col-xs-9 col-xs-offset-3">
+				<li> Enjoys rap songs </li>
+				<li> Enjoys peanut butter </li>
+				<li> Very gentle speaking style </li>
+			</ul>
+
+			<div id="map" class="col-xs-12" style="height: 300px; width: 100%;"></div>
+		    <script>
+		      function initMap() {
+		        var uluru = {lat: -25.363, lng: 131.044};
+		        var map = new google.maps.Map(document.getElementById('map'), {
+		          zoom: 4,
+		          center: uluru
+		        });
+		        var marker = new google.maps.Marker({
+		          position: uluru,
+		          map: map
+		        });
+		      }
+		    </script>
+		    <script async defer
+		    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvpGnTJuxn8dmrY1So1J_t1h68R6WL_bs&callback=initMap">
+		    </script>
+		    
+
+		</div>
+	</div>
+
+	<div class="col-xs-9" style="height: 100%; overflow-y: scroll; padding: 0px;">
+		<div class="col-xs-12" style="margin: 0px; margin-top: 6%; background-color: #FFFFFF;">
+			<div id="container" style="height: 400px; min-width: 310px; margin: 10px;"></div>
+		</div>
+		
+		<div class="col-xs-12" style="background-color: #444444;" > <br> </div>
+
+		<div class="col-xs-12" style="margin: 0px; background-color: #FFFFFF;">
+			<h3><strong> Log </strong> <strong style="color: #DDDDDD;"> From the Last 6 Days </strong></h3>
+			<div class="col-xs-2"><strong>February 18th, 2017</strong> <p style="margin: 0px;">Average: 4.6</p><p style="margin: 0px;">Peak: 9.2</p><p style="margin: 0px;">Min: 0.2</p></div>
+
+			<div class="col-xs-2"><strong>February 17th, 2017</strong> <p style="margin: 0px;">Average: 4.6</p><p style="margin: 0px;">Peak: 9.2</p><p style="margin: 0px;">Min: 0.2</p></div>
+
+			<div class="col-xs-2"><strong>February 16th, 2017</strong> <p style="margin: 0px;">Average: 4.6</p><p style="margin: 0px;">Peak: 9.2</p><p style="margin: 0px;">Min: 0.2</p></div>
+
+			<div class="col-xs-2"><strong>February 15th, 2017</strong> <p style="margin: 0px;">Average: 3.8</p><p style="margin: 0px;">Peak: 6.4</p><p style="margin: 0px;">Min: 0.2</p></div>
+
+			<div class="col-xs-2"><strong>February 14th, 2017</strong> <p style="margin: 0px;">Average: 4.4</p><p style="margin: 0px;">Peak: 10.4</p><p style="margin: 0px;">Min: 2.2</p></div>
+
+			<div class="col-xs-2"><strong>February 13th, 2017</strong> <p style="margin: 0px;">Average: 3.6</p><p style="margin: 0px;">Peak: 6.2</p><p style="margin: 0px;">Min: 1.2</p></div>
+
+		</div>
+
+		<div class="col-xs-12" style="background-color: #444444; margin-top: 2%;" > <br> </div>
+
+		<div class="col-xs-12" style="margin: 0px; background-color: #FFFFFF;">
+			<h3><strong> Steps </strong> <strong style="color: #DDDDDD;"> To Utilize the Imperium Toolkit </strong></h3>
+
+			<div class="col-xs-3">
+				<h2 style="color: #CCCCCC;"><strong>(1.)</strong></h2>
+				<h3 style="color: #888888;"><strong>Wear Imperium Band on center three fingers on dominant hand</strong></h3>
+			</div>
+
+			<div class="col-xs-3">
+				<h2 style="color: #CCCCCC;"><strong>(2.)</strong></h2>
+				<h3 style="color: #888888;"><strong>Using voice commands, utilize Alexa to initiate test.</strong></h3>
+			</div>
+
+			<div class="col-xs-3">
+				<h2 style="color: #CCCCCC;"><strong>(3.)</strong></h2>
+				<h3 style="color: #888888;"><strong>Perform hand gestures in synchronized manner to screen.</strong></h3>
+			</div>
+
+			<div class="col-xs-3">
+				<h2 style="color: #CCCCCC;"><strong>(4.)</strong></h2>
+				<h3 style="color: #888888;"><strong>Wait for data to be processed and see information visualization.</strong></h3>
+			</div>
+
+		</div>
+	<div>
+
+</body>
+</html>

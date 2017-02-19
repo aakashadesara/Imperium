@@ -2,42 +2,231 @@
 <head>
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css">
+
+	<script   src="https://code.jquery.com/jquery-3.1.1.js"   integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+	<script type="text/javascript" src="javascript.js"></script>
+
+
 </head>
-<body style="">
+<body style="background-color: rgba(47, 48, 44, 255);">
 	<!-- DASHBOARD -->
-	<nav class="navbar navbar-default col-xs-12" style="position: fixed; z-index: 3; border-radius: 0px;">
-		<div class="container-fluid">
+	<nav class="navbar navbar-default col-xs-12" style="position: fixed; z-index: 3; border-radius: 0px; background-color :rgba(255,255,255,0); border: 0px;">
+
+
+		<canvas class="net-canvas" style="width: 100%; height: 100%; position: fixed; z-index: -2; display: block;"></canvas>
+
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#">Imperium</a>
+			<a class="navbar-brand" href="#" style="color: rgba(255, 255, 255, 255);">Imperium</a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
 			<ul class="nav navbar-nav">
-				<li><a href="#">Dashboard</a></li>
-				<li><a href="#">Profile</a></li>
-				<li><a href="#">Configuration</a></li>
-				<li><a href="#">Information</a></li>
-				<li><a href="#">Logs</a></li>
-			</ul>
-
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Signout</a></li>
+				<li><a href="#">The Parkinson's Partner</a></li>
 			</ul>
 		</div>
 	</nav>
 
+	<div class="col-xs-4 col-xs-offset-4" style="margin-top: 15%; z-index: 3;">
+		<div class="form-group">
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputEmail" placeholder="Email" style="text-align: center;">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top: 15%;">
+      <div class="col-lg-10">
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password" style="text-align: center;">
+      </div>
+    </div>
 
-	<!-- LEFT DIV -->
-	<div class="col-xs-3" style="background-color: #CCCCCC; height: 100%;">
-		<div id="left_div_content" style="margin-top: 22%;" class="col-xs-10 col-xs-offset-1">
-			<img src="assets/temp.jpg" class="col-xs-12" style="margin-bottom: 5%;">
-			<h2 style="text-align: center;"> <strong> Juliana </strong> Banatao </h2>
-		</div>
+    <div class="form-group">
+      <div class="col-xs-12">
+        <button type="reset" class="btn btn-default col-xs-6 col-xs-offset-2" style="margin-top: 5%;" onClick="signup()">Signup</button>
+        <button type="submit" class="btn btn-primary col-xs-6 col-xs-offset-2" style="margin-top: 5%;" onClick="login()">Log In</button>
+      </div>
+    </div>
+
+
 	</div>
 
-	<div class="col-xs-9" style="height: 100%; overflow-y: scroll;">
 
 	<div>
 
 </body>
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.js"   integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
+<script type="text/javascript">
+'use strict';
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+  var props = {
+    max_dist: 0.05
+  };
+
+  var $el = $('.net-canvas'),
+      width = $el.width(),
+      height = $el.height(),
+      vmax = Math.max(width, height),
+      ar = width / height;
+  $el.attr({ width: width, height: height });
+  var ctx = $el.get(0).getContext('2d');
+
+  var mouse = {
+    x: 0, y: 0, px: 0, py: 0,
+    ang: function ang() {
+      return Math.atan2(this.y - this.py, this.x - this.px);
+    },
+    mag: function mag() {
+      var dx = this.x - this.px,
+          dy = this.y - this.py;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+  };
+
+  function normalizeMouse(c, e) {
+    var rect = c.getBoundingClientRect();
+    return [(e.clientX - rect.left) / vmax, (e.clientY - rect.top) / vmax];
+  }
+
+  $el.on('mousemove', function (e) {
+    var _normalizeMouse = normalizeMouse(this, e);
+
+    mouse.x = _normalizeMouse[0];
+    mouse.y = _normalizeMouse[1];
+  });
+
+  $el.on('mouseenter', function (e) {
+    var _normalizeMouse2 = normalizeMouse(this, e);
+
+    mouse.px = _normalizeMouse2[0];
+    mouse.py = _normalizeMouse2[1];
+  });
+
+  var rescale = function rescale(n, ia, ib, oa, ob) {
+    return oa + (ob - oa) * ((n - ia) / (ib - ia));
+  };
+
+  var saturate = function saturate(x) {
+    return Math.max(Math.min(x, 1), 0);
+  };
+
+  var Vec2 = function () {
+    function Vec2(x, y) {
+      _classCallCheck(this, Vec2);
+
+      this.x = x;
+      this.y = y;
+    }
+
+    Vec2.prototype.add = function add(v) {
+      this.x += v.x;
+      this.y += v.y;
+    };
+
+    Vec2.prototype.scale = function scale(f) {
+      this.x *= f;
+      this.y *= f;
+    };
+
+    return Vec2;
+  }();
+
+  var Point = function () {
+    function Point(pos, weight) {
+      _classCallCheck(this, Point);
+
+      this.pos = pos;
+      this.vel = new Vec2(0, 0);
+      this.weight = weight;
+      this.ox = pos.x; // for magnetism
+    }
+
+    Point.prototype.update = function update() {
+      var f = this.forces();
+      f.scale(this.weight);
+      this.vel.add(f);
+      this.pos.add(this.vel);
+      this.vel.scale(15 / 16); // dampen
+
+      if (this.pos.y < -props.max_dist) this.pos.y += 1 / ar + props.max_dist * 2;
+    };
+
+    Point.prototype.forces = function forces() {
+      var res = new Vec2(0, -2e-5);
+
+      res.add(new Vec2((this.ox - this.pos.x) / 256, 0));
+
+      var dx = this.pos.x - mouse.x,
+          dy = this.pos.y - mouse.y,
+          pmag = Math.sqrt(dx * dx + dy * dy),
+          pang = Math.atan2(dy, dx),
+          mmag = mouse.mag(),
+          x = Math.cos(pang - mouse.ang()) * saturate(rescale(Math.abs(pmag - mmag) * 24, 0, mmag + 1, 1, 0) * mmag / 12);
+
+      res.add(new Vec2(dx / pmag * x, dy / pmag * x));
+
+      return res;
+    };
+
+    Point.prototype.render = function render(ctx) {
+      ctx.fillRect(this.pos.x, this.pos.y, this.weight / vmax, this.weight / vmax);
+    };
+
+    return Point;
+  }();
+
+  var points = Array.from({
+    length: 512
+  }, function (_, i) {
+    return new Point(new Vec2(i / 511 * Math.min(ar, 1), Math.random() * (1 / ar + props.max_dist)), 1 / (0.5 + Math.random() * 1.5));
+  });
+
+  function loop() {
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.save();
+    ctx.lineWidth = 1 / vmax;
+    ctx.strokeStyle = ctx.fillStyle = 'white';
+    ctx.scale(vmax, vmax);
+
+    var len = points.length;
+    for (var i = 0; i < len - 1; i++) {
+      for (var j = i + 1; j < len; j++) {
+        var p1 = points[i],
+            p2 = points[j],
+            w = (p1.weight + p2.weight) / 2,
+            dx = p1.pos.x - p2.pos.x,
+            dy = p1.pos.y - p2.pos.y,
+            dw = (p1.weight - p2.weight) / 16,
+            d = Math.sqrt(dx * dx + dy * dy + dw * dw) / w;
+        if (d < props.max_dist) {
+          ctx.globalAlpha = 1 - d / props.max_dist;
+          ctx.beginPath();
+          ctx.moveTo(p1.pos.x, p1.pos.y);
+          ctx.lineTo(p2.pos.x, p2.pos.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    ctx.globalAlpha = 1.0;
+    for (var i = 0; i < len; i++) {
+      var p = points[i];
+      p.update();
+      p.render(ctx);
+    }
+
+    ctx.restore();
+
+    mouse.px = mouse.x;
+    mouse.py = mouse.y;
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+})();
+</script>
 </html>
